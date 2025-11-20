@@ -1,4 +1,4 @@
-package com.Linka.backend.entity;
+package com.linka.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;

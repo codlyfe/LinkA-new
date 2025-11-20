@@ -1,34 +1,33 @@
-# LinkA Mobile Development Setup Script
-# This script sets up the development environment for mobile testing
+# LinkA Mobile Development Environment Starter
+# Optimized for mobile device testing
 
-Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "  LinkA Mobile Development Environment" -ForegroundColor Cyan
-Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "=========================================" -ForegroundColor Green
+Write-Host " LinkA Mobile Development Environment" -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Green
 Write-Host ""
 
-Write-Host "[1/4] Starting Backend Server (Port 8081)..." -ForegroundColor Yellow
-Start-Process powershell -ArgumentList "-File", "Linka/start-dev.bat" -WindowStyle Normal
+Write-Host "[1/3] Starting Backend Server..." -ForegroundColor Yellow
+Set-Location "Linka-Backend"
+Write-Host "Starting Spring Boot application on port 8080..." -ForegroundColor Cyan
 
-Start-Sleep -Seconds 3
+# Start backend in background
+$backendProcess = Start-Process -FilePath "mvn" -ArgumentList "spring-boot:run", "-Dspring-boot.run.profiles=dev" -PassThru -WindowStyle Normal
 
-Write-Host "[2/4] Starting Frontend Server (Port 5173)..." -ForegroundColor Yellow
-Set-Location "Linka-Frontend"
-Write-Host "Installing dependencies and starting Vite dev server..."
-Start-Process powershell -ArgumentList "-Command", "npm install" -WindowStyle Minimized
-
-Start-Sleep -Seconds 5
-
-Write-Host "[3/4] Opening application in default browser..." -ForegroundColor Yellow
+# Wait a bit for backend to initialize
 Start-Sleep -Seconds 10
-Start-Process "http://localhost:5173"
 
-Write-Host "[4/4] Development environment ready!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Backend API: http://localhost:8081/api/health" -ForegroundColor White
-Write-Host "Frontend App: http://localhost:5173" -ForegroundColor White
-Write-Host "Mobile Testing: http://[YOUR_IP]:5173" -ForegroundColor Yellow
-Write-Host ""
-Write-Host "To find your local IP for mobile testing, run: ipconfig" -ForegroundColor Gray
-Write-Host ""
-Write-Host "Press any key to continue..." -ForegroundColor Gray
-$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+Write-Host "[2/3] Starting Frontend Server..." -ForegroundColor Yellow
+Set-Location "../Linka-Frontend"
+
+# Check if node_modules exists
+if (!(Test-Path "node_modules")) {
+    Write-Host "Installing dependencies..." -ForegroundColor Cyan
+    npm install
+}
+
+Write-Host "Starting Vite development server on port 5173..." -ForegroundColor Cyan
+Write-Host "Access URL: http://$(ifconfig.me 2>/dev/null || hostname):5173" -ForegroundColor Green
+
+# Start frontend
+npm run dev

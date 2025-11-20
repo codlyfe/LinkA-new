@@ -1,4 +1,4 @@
-package com.Linka.backend.util;
+package com.linka.backend.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

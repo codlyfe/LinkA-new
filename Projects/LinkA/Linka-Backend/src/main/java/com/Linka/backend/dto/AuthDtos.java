@@ -1,4 +1,4 @@
-package com.Linka.backend.dto;
+package com.linka.backend.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -188,4 +188,6 @@ public class AuthDtos {
         public String getToken() { return token; }
         public void setToken(String token) { this.token = token; }
     }
+
+
 }

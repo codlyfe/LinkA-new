@@ -1,9 +1,10 @@
-package com.Linka.backend.service;
+package com.linka.backend.service;
 
-import com.Linka.backend.config.JwtUtil;
-import com.Linka.backend.dto.AuthDtos.*;
-import com.Linka.backend.entity.User;
-import com.Linka.backend.repository.UserRepository;
+import com.linka.backend.config.JwtUtil;
+import com.linka.backend.dto.AuthDtos.*;
+import com.linka.backend.dto.ProfileUpdateRequest;
+import com.linka.backend.entity.User;
+import com.linka.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -59,7 +60,7 @@ public class AuthService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
             user.getEmail(),
             user.getPassword(),
-            user.getStatus() == User.UserStatus.ACTIVE,
+            user.getStatus() == User.UserStatus.ACTIVE && !user.isAccountLocked(),
             true, true, true,
             java.util.Collections.emptyList()
         );
@@ -125,20 +126,23 @@ public class AuthService implements UserDetailsService {
 
     public AuthResponse login(LoginRequest request) {
         try {
-            // Authenticate user
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
-
-            // Get user details
-            UserDetails userDetails = loadUserByUsername(request.getEmail());
+            // Find user by email
             User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + request.getEmail()));
 
             // Check account status
             if (user.getStatus() != User.UserStatus.ACTIVE) {
                 throw new IllegalArgumentException("Account is not active. Status: " + user.getStatus());
             }
+
+            // Verify password manually
+            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                throw new IllegalArgumentException("Invalid email or password");
+            }
+
+            // Update login statistics
+            user.incrementLoginCount();
+            userRepository.save(user);
 
             // Generate JWT token with additional claims
             Map<String, Object> claims = new HashMap<>();
@@ -164,6 +168,8 @@ public class AuthService implements UserDetailsService {
             response.setMessage("Login successful");
 
             return response;
+        } catch (UsernameNotFoundException e) {
+            throw new IllegalArgumentException("Invalid email or password", e);
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid email or password", e);
         }
@@ -233,6 +239,44 @@ public class AuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid or expired token", e);
+        }
+    }
+
+    public User updateProfile(Long userId, ProfileUpdateRequest request) {
+        try {
+            User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            
+            // Check if email is already taken by another user
+            if (!user.getEmail().equals(request.getEmail()) && 
+                userRepository.existsByEmail(request.getEmail())) {
+                throw new IllegalArgumentException("Email already exists: " + request.getEmail());
+            }
+            
+            // Check if phone number is already taken by another user
+            if (request.getPhoneNumber() != null && 
+                !request.getPhoneNumber().equals(user.getPhoneNumber()) && 
+                userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+                throw new IllegalArgumentException("Phone number already exists: " + request.getPhoneNumber());
+            }
+            
+            // Update user fields
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setEmail(request.getEmail());
+            user.setPhoneNumber(request.getPhoneNumber());
+            user.setLocation(request.getLocation());
+            user.setCity(request.getCity());
+            user.setDistrict(request.getDistrict());
+            
+            // Save updated user
+            User updatedUser = userRepository.save(user);
+            
+            return updatedUser;
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Failed to update profile: " + e.getMessage(), e);
         }
     }
 

@@ -1,12 +1,14 @@
-package com.Linka.backend.controller;
+package com.linka.backend.controller;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 public class HealthController {
 
     @GetMapping("/health")
@@ -18,11 +20,6 @@ public class HealthController {
             "version", "1.0.0",
             "message", "LinkA Backend is running successfully"
         );
-    }
-
-    @GetMapping("/")
-    public String home() {
-        return "LinkA Backend API is running! Visit /health for status.";
     }
 
     @GetMapping("/info")

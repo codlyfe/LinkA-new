@@ -5,7 +5,7 @@ echo " LinkA Development Environment Starter"
 echo "========================================="
 echo
 
-echo "[1/2] Starting Backend Server (Port 8081)..."
+echo "[1/2] Starting Backend Server (Port 8080)..."
 cd Linka-Backend
 echo "Starting Spring Boot application..."
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev &
@@ -13,8 +13,8 @@ echo "Starting Spring Boot application..."
 BACKEND_PID=$!
 echo "Backend PID: $BACKEND_PID"
 
-echo "Backend will start at: http://localhost:8081"
-echo "Health check: http://localhost:8081/api/health"
+echo "Backend will start at: http://localhost:8080"
+echo "Health check: http://localhost:8080/api/health"
 echo
 
 echo "[2/2] Starting Frontend Server (Port 5173)..."

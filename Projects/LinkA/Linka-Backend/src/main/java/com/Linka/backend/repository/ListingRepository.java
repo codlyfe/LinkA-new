@@ -1,8 +1,8 @@
-package com.Linka.backend.repository;
+package com.linka.backend.repository;
 
-import com.Linka.backend.entity.Category;
-import com.Linka.backend.entity.Listing;
-import com.Linka.backend.entity.User;
+import com.linka.backend.entity.Category;
+import com.linka.backend.entity.Listing;
+import com.linka.backend.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

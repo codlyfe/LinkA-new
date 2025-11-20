@@ -1,7 +1,7 @@
-package com.Linka.backend.controller;
+package com.linka.backend.controller;
 
-import com.Linka.backend.entity.Category;
-import com.Linka.backend.repository.CategoryRepository;
+import com.linka.backend.entity.Category;
+import com.linka.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

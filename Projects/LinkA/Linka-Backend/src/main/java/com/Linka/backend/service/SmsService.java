@@ -1,4 +1,4 @@
-package com.Linka.backend.service;
+package com.linka.backend.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

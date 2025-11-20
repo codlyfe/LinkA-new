@@ -1,7 +1,9 @@
-package com.Linka.backend.controller;
+package com.linka.backend.controller;
 
-import com.Linka.backend.dto.AuthDtos.*;
-import com.Linka.backend.service.AuthService;
+import com.linka.backend.dto.AuthDtos.*;
+import com.linka.backend.dto.ProfileUpdateRequest;
+import com.linka.backend.entity.User;
+import com.linka.backend.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
 
     @Autowired
@@ -129,6 +130,35 @@ public class AuthController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.ok(java.util.Map.of("authenticated", false));
+        }
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@Valid @RequestBody ProfileUpdateRequest request) {
+        try {
+            var user = authService.getCurrentUser();
+            var updatedUser = authService.updateProfile(user.getId(), request);
+            
+            java.util.Map<String, Object> response = new java.util.HashMap<>();
+            response.put("id", updatedUser.getId());
+            response.put("firstName", updatedUser.getFirstName());
+            response.put("lastName", updatedUser.getLastName());
+            response.put("email", updatedUser.getEmail());
+            response.put("phoneNumber", updatedUser.getPhoneNumber());
+            response.put("location", updatedUser.getLocation());
+            response.put("city", updatedUser.getCity());
+            response.put("district", updatedUser.getDistrict());
+            response.put("userType", updatedUser.getUserType().name());
+            response.put("status", updatedUser.getStatus().name());
+            response.put("emailVerified", updatedUser.isEmailVerified());
+            response.put("phoneVerified", updatedUser.isPhoneVerified());
+            response.put("createdAt", updatedUser.getCreatedAt());
+            response.put("updatedAt", updatedUser.getUpdatedAt());
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(java.util.Map.of("error", e.getMessage()));
         }
     }
 }

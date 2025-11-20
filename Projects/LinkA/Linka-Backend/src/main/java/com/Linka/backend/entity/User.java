@@ -1,4 +1,4 @@
-package com.Linka.backend.entity;
+package com.linka.backend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import com.Linka.backend.util.JsonConverter;
+import com.linka.backend.util.JsonConverter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -157,6 +157,7 @@ public class User {
     }
     
     public enum UserType {
+        ADMIN,
         BUYER,
         SELLER,
         BOTH

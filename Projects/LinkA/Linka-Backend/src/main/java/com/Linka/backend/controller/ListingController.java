@@ -1,12 +1,12 @@
-package com.Linka.backend.controller;
+package com.linka.backend.controller;
 
-import com.Linka.backend.entity.Category;
-import com.Linka.backend.entity.Listing;
-import com.Linka.backend.entity.User;
-import com.Linka.backend.repository.CategoryRepository;
-import com.Linka.backend.repository.ListingRepository;
-import com.Linka.backend.repository.UserRepository;
-import com.Linka.backend.service.AuthService;
+import com.linka.backend.entity.Category;
+import com.linka.backend.entity.Listing;
+import com.linka.backend.entity.User;
+import com.linka.backend.repository.CategoryRepository;
+import com.linka.backend.repository.ListingRepository;
+import com.linka.backend.repository.UserRepository;
+import com.linka.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

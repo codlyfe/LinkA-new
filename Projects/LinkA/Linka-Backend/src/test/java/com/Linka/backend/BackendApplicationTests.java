@@ -1,4 +1,4 @@
-package com.Linka.backend;
+package com.linka.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,8 @@
-package com.Linka.backend.service;
+package com.linka.backend.service;
 
-import com.Linka.backend.entity.User;
-import com.Linka.backend.entity.NotificationPreferences;
-import com.Linka.backend.repository.UserRepository;
+import com.linka.backend.entity.User;
+import com.linka.backend.entity.NotificationPreferences;
+import com.linka.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

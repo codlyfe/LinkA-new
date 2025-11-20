@@ -1,4 +1,4 @@
-package com.Linka.backend.config;
+package com.linka.backend.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -15,7 +15,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret:mySecretKey123456789012345678901234567890}")
+    @Value("${jwt.secret:mySecretKey123456789012345678901234567890123456789012345678901234567890}")
     private String secret;
 
     @Value("${jwt.expiration:86400000}") // 24 hours

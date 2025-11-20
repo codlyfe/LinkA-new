@@ -1,4 +1,4 @@
-package com.Linka.backend.entity;
+package com.linka.backend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;

@@ -1,4 +1,4 @@
-package com.Linka.backend.config;
+package com.linka.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
