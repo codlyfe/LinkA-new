@@ -1,87 +1,36 @@
 #!/bin/bash
 
-echo "========================================"
-echo "       Linka Application Launcher"
-echo "========================================"
+echo "========================================="
+echo " LinkA Development Environment Starter"
+echo "========================================="
 echo
 
-# Check if Java is installed
-if ! command -v java &> /dev/null; then
-    echo "ERROR: Java is not installed or not in PATH"
-    echo "Please install Java 21 or later"
-    exit 1
-fi
-
-# Check if Maven is installed
-if ! command -v mvn &> /dev/null; then
-    echo "ERROR: Maven is not installed or not in PATH"
-    echo "Please install Maven 3.6 or later"
-    exit 1
-fi
-
-# Check if Node.js is installed
-if ! command -v node &> /dev/null; then
-    echo "ERROR: Node.js is not installed or not in PATH"
-    echo "Please install Node.js 18 or later"
-    exit 1
-fi
-
-# Check if npm is installed
-if ! command -v npm &> /dev/null; then
-    echo "ERROR: npm is not installed or not in PATH"
-    echo "Please install npm"
-    exit 1
-fi
-
-echo "Starting Backend Server..."
-echo "Backend will run on http://localhost:8081"
-echo "To stop the backend: Ctrl+C in this terminal or close the terminal window"
-echo
-
-# Start backend in background
+echo "[1/2] Starting Backend Server (Port 8081)..."
 cd Linka-Backend
-mvn spring-boot:run &
+echo "Starting Spring Boot application..."
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev &
+
 BACKEND_PID=$!
-cd ..
+echo "Backend PID: $BACKEND_PID"
 
-echo
-echo "Waiting for backend to start..."
-sleep 15
-
-echo
-echo "Starting Frontend Server..."
-echo "Frontend will run on http://localhost:8080"
-echo "To stop the frontend: Ctrl+C in this terminal or close the terminal window"
+echo "Backend will start at: http://localhost:8081"
+echo "Health check: http://localhost:8081/api/health"
 echo
 
-# Start frontend in background
-cd Linka-Frontend
-npm run dev &
-FRONTEND_PID=$!
-cd ..
+echo "[2/2] Starting Frontend Server (Port 5173)..."
+cd ../Linka-Frontend
 
-echo
-echo "========================================"
-echo "Both servers are starting..."
-echo "Backend: http://localhost:8081"
-echo "Frontend: http://localhost:8080"
-echo "API Health Check: http://localhost:8081/api/health"
-echo "========================================"
-echo
-echo "Press Ctrl+C to stop both servers"
+# Check if node_modules exists
+if [ ! -d "node_modules" ]; then
+    echo "Installing dependencies..."
+    npm install
+fi
 
-# Function to cleanup background processes
-cleanup() {
-    echo
-    echo "Shutting down servers..."
-    kill $BACKEND_PID 2>/dev/null
-    kill $FRONTEND_PID 2>/dev/null
-    echo "Servers stopped."
-    exit 0
-}
+echo "Starting Vite development server..."
+npm run dev
 
-# Trap Ctrl+C
-trap cleanup INT
+# If we reach here, one of the servers stopped
+echo "Server stopped. Cleaning up..."
+kill $BACKEND_PID 2>/dev/null
 
-# Wait for both processes
-wait
+echo "Development environment stopped."

@@ -1,200 +1,191 @@
-# LinkA - Full Stack Application
+# LinkA - Uganda's Trusted Marketplace
 
-LinkA is a full-stack marketplace application for Uganda, built with Spring Boot (backend) and React with TypeScript (frontend).
+A full-stack marketplace application built with React/TypeScript frontend and Spring Boot backend, designed with mobile-first responsive design and secure mobile money integration for Uganda.
 
-## 🏗️ Architecture
+## 🌟 Features
 
-- **Backend**: Spring Boot 3.5.7 with Java 21
-- **Frontend**: React 18 with TypeScript, Vite, Tailwind CSS, and shadcn/ui
-- **Database**: Configured for PostgreSQL (can be switched to other databases)
-- **Development**: Hot reload for both frontend and backend
+- **Mobile-First Responsive Design** - Optimized for smartphones and tablets
+- **Secure Mobile Money Integration** - MTN Mobile Money, Airtel Money, Mula by Stanbic
+- **Backend-Frontend Communication** - RESTful API with CORS support
+- **Progressive Web App (PWA)** - Installable on mobile devices
+- **Multiplatform Support** - Web, mobile browsers, and potential native app conversion
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+- Java 17+ and Maven (for backend)
+- Node.js 18+ and npm/pnpm/yarn (for frontend)
+- Git
 
-Before running the application, ensure you have the following installed:
-
-- **Java 21** or later
-- **Maven 3.6** or later  
-- **Node.js 18** or later
-- **npm** (comes with Node.js)
-
-### Option 1: Automated Launch Scripts
-
-#### Windows Users
-```bash
-# Double-click or run in Command Prompt/PowerShell
-Linka\start-dev.bat
-
-# Or for PowerShell users
-powershell -ExecutionPolicy Bypass -File Linka\start-dev.ps1
-```
-
-#### Unix/Linux/macOS Users
-```bash
-# Make executable and run
-chmod +x Linka/start-dev.sh
-./Linka/start-dev.sh
-```
-
-### Option 2: Manual Launch
-
-#### Start Backend
+### Backend Setup
 ```bash
 cd Linka-Backend
-mvn spring-boot:run
+./mvnw spring-boot:run
+# or on Windows: mvn spring-boot:run
 ```
 Backend runs on: http://localhost:8081
 
-#### Start Frontend (in a new terminal)
+### Frontend Setup
 ```bash
-cd Linka-Frontend  
+cd Linka-Frontend
 npm install
 npm run dev
 ```
-Frontend runs on: http://localhost:8080
+Frontend runs on: http://localhost:5173
 
-## 🔧 Configuration
+### All-in-One Scripts
 
-### Backend Configuration
-Location: `Linka-Backend/src/main/resources/application.yaml`
+**Windows:**
+```bash
+# Start both servers
+Linka\start-dev.bat
 
-Key settings:
-- **Port**: 8081 (configurable)
-- **CORS**: Configured to allow frontend at http://localhost:8080
-- **Profiles**: Development profile active by default
-
-### Frontend Configuration  
-Location: `Linka-Frontend/vite.config.ts`
-
-Key settings:
-- **Port**: 8080 (configurable)
-- **API Proxy**: Automatically proxies `/api` requests to backend
-
-## 📡 API Endpoints
-
-The backend provides the following endpoints:
-
-- `GET /api/health` - Health check
-- `GET /api/info` - Application information
-- `GET /actuator/*` - Spring Boot Actuator endpoints
-
-### Example API Usage
-
-```javascript
-// Check backend health
-fetch('/api/health')
-  .then(response => response.json())
-  .then(data => console.log(data));
-
-// Expected response:
-{
-  "status": "UP",
-  "message": "Backend is running successfully", 
-  "timestamp": "2025-11-19T16:21:39",
-  "application": "Linka Backend"
-}
+# Start mobile-optimized environment
+Linka\start-mobile.bat
 ```
 
-## 🌟 Features Implemented
+**Linux/macOS:**
+```bash
+# Start both servers
+bash Linka/start-dev.sh
+```
+
+## 📱 Mobile Testing
+
+To test on mobile devices:
+
+1. **Find your local IP:**
+   ```bash
+   # Windows
+   ipconfig
+   
+   # Linux/macOS
+   ifconfig
+   ```
+
+2. **Update CORS configuration** in `Linka-Backend/src/main/java/com/Linka/backend/config/WebConfig.java`
+
+3. **Access the app** on mobile: `http://[YOUR_IP]:5173`
+
+4. **Install as PWA** - Mobile browsers will prompt to install as native app
+
+## 🔧 Mobile Money Integration
+
+The app includes support for Uganda's major mobile money providers:
+
+- **MTN Mobile Money** (MIN: 500 UGX, MAX: 5,000,000 UGX, Fee: 1%)
+- **Airtel Money** (MIN: 500 UGX, MAX: 3,000,000 UGX, Fee: 1.5%)
+- **Mula by Stanbic** (MIN: 1,000 UGX, MAX: 2,000,000 UGX, Fee: 0.5%)
+
+### API Endpoints
+- `GET /api/health` - Health check
+- `GET /api/mobile-money/providers` - List providers
+- `POST /api/mobile-money/payment` - Initiate payment
+- `GET /api/mobile-money/transaction/{id}` - Check transaction status
+- `GET /api/mobile-money/validate-phone/{phone}` - Validate phone number
+
+## 📂 Project Structure
+
+```
+LinkA/
+├── Linka-Backend/          # Spring Boot backend
+│   ├── src/main/java/...
+│   └── src/main/resources/...
+├── Linka-Frontend/         # React/TypeScript frontend
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/         # Page components
+│   │   ├── services/      # API services
+│   │   ├── hooks/         # Custom hooks
+│   │   └── lib/           # Utilities
+│   ├── public/            # Static assets
+│   └── ...
+└── start-*.{bat,sh,ps1}  # Development scripts
+```
+
+## 🎯 Mobile-First Features
+
+1. **Responsive Navigation** - Mobile bottom nav + desktop top nav
+2. **Touch-Optimized** - `touch-manipulation` and proper tap handling
+3. **Safe Area Support** - iPhone notch compatibility
+4. **PWA Manifest** - App-like installation
+5. **Service Worker Ready** - Offline functionality foundation
+6. **Mobile-First CSS** - Progressive enhancement approach
+
+## 🛠️ Technical Stack
+
+### Frontend
+- **React 18** with TypeScript
+- **Vite** for fast development
+- **Tailwind CSS** for styling
+- **Lucide React** for icons
+- **React Query** for state management
+- **React Router** for navigation
 
 ### Backend
-- ✅ Spring Boot application with proper configuration
-- ✅ CORS enabled for frontend integration  
-- ✅ Health check and info endpoints
-- ✅ Database auto-configuration excluded (ready for future use)
-- ✅ Development logging configured
+- **Spring Boot 3** with Java 17
+- **Spring MVC** for REST APIs
+- **CORS** configuration for cross-origin requests
+- **Jackson** for JSON processing
 
-### Frontend  
-- ✅ React 18 with TypeScript
-- ✅ Vite for fast development
-- ✅ Tailwind CSS for styling
-- ✅ shadcn/ui component library
-- ✅ React Router for navigation
-- ✅ API service for backend communication
-- ✅ Backend connection status indicator
-- ✅ Responsive design
+## 🚦 Development Workflow
 
-### Launch Scripts
-- ✅ Windows batch script (.bat)
-- ✅ PowerShell script (.ps1) 
-- ✅ Unix/Linux shell script (.sh)
-- ✅ Automatic dependency checking
-- ✅ Sequential startup with proper delays
-- ✅ Browser auto-opening
+1. **Start Backend** - `cd Linka-Backend && mvn spring-boot:run`
+2. **Start Frontend** - `cd Linka-Frontend && npm run dev`
+3. **Test APIs** - Visit http://localhost:8081/api/health
+4. **Test Frontend** - Visit http://localhost:5173
+5. **Mobile Testing** - Use your local IP on mobile device
 
-## 🔄 Development Workflow
+## 📝 Environment Variables
 
-1. **Run the launch script** or start both servers manually
-2. **Frontend** automatically proxies API calls to backend
-3. **Backend** serves on port 8081, **Frontend** on port 8080
-4. **Hot reload** works for both frontend and backend
-5. **CORS** is configured for seamless development
-
-## 🛠️ Troubleshooting
-
-### Backend won't start
-- Check Java version: `java -version` (should be 21+)
-- Check Maven installation: `mvn -version` (should be 3.6+)
-- Verify port 8081 is available
-
-### Frontend won't start  
-- Check Node.js version: `node -version` (should be 18+)
-- Check npm installation: `npm --version`
-- Verify port 8080 is available
-- Install dependencies: `npm install` in Linka-Frontend directory
-
-### CORS Errors
-- Ensure backend is running on port 8081
-- Check CORS configuration in `WebConfig.java`
-- Verify frontend is running on port 8080
-
-### API Connection Failed
-- Backend must be running before frontend can connect
-- Check backend health: http://localhost:8081/api/health
-- Verify Vite proxy configuration
-
-## 📁 Project Structure
-
+### Frontend (.env)
 ```
-Linka/
-├── Linka-Backend/
-│   ├── src/main/java/com/Linka/backend/
-│   │   ├── BackendApplication.java     # Main application
-│   │   ├── config/WebConfig.java       # CORS configuration
-│   │   └── controller/HealthController.java # API endpoints
-│   └── src/main/resources/
-│       └── application.yaml            # Backend configuration
-├── Linka-Frontend/
-│   ├── src/
-│   │   ├── services/api.ts             # API service
-│   │   ├── pages/Home.tsx              # Home page with backend status
-│   │   └── ...                         # Other React components
-│   └── vite.config.ts                  # Frontend configuration
-├── start-dev.bat                       # Windows launch script
-├── start-dev.ps1                       # PowerShell launch script
-├── start-dev.sh                        # Unix/Linux launch script
-└── README.md                           # This file
+VITE_API_BASE_URL=http://localhost:8081/api
 ```
 
-## 🚀 Next Steps
+### Backend (application.yaml)
+```yaml
+server:
+  port: 8081
+  
+spring:
+  profiles:
+    active: dev
+```
 
-This setup provides a solid foundation for developing the full LinkA marketplace application. You can now:
+## 🔄 Production Build
 
-1. **Add database integration** - Configure JPA and add entities
-2. **Implement authentication** - Add JWT-based auth system  
-3. **Create more API endpoints** - Build out marketplace functionality
-4. **Add more frontend pages** - Build out the user interface
-5. **Deploy to production** - Configure for production environment
+### Frontend
+```bash
+cd Linka-Frontend
+npm run build
+npm run preview
+```
 
-## 🔗 Links
+### Backend
+```bash
+cd Linka-Backend
+./mvnw clean package
+java -jar target/backend-1.0.0.jar
+```
 
-- Frontend: http://localhost:8080
-- Backend API: http://localhost:8081  
-- Backend Health: http://localhost:8081/api/health
-- Backend Actuator: http://localhost:8081/actuator
+## 📞 Support
+
+For development issues:
+1. Check console logs in browser DevTools
+2. Verify backend is running on port 8081
+3. Check CORS configuration
+4. Ensure mobile device can reach development server
+
+## 🎉 Next Steps
+
+- Add database integration (PostgreSQL/MySQL)
+- Implement user authentication
+- Add real mobile money provider APIs
+- Create product listing functionality
+- Add image upload and management
+- Implement search and filtering
 
 ---
 
-Made with ❤️ for the Uganda marketplace
+**Built with ❤️ for Uganda's digital marketplace**
